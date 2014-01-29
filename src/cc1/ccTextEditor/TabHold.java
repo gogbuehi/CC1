@@ -127,8 +127,9 @@ public class TabHold {
     }
     
     private static int checkForNewline(char c) {
-        if (String.valueOf(c).equals(StringUtil.newline))
+        if (String.valueOf(c).equals(StringUtil.newline)) {
             return -1;
+        }
         return 0;
     }
     
@@ -247,10 +248,12 @@ public class TabHold {
             }
              */
             for (int i = 0; i < (pos - rowOffset); i++) {
-                if (String.valueOf(text.charAt(rowOffset + i)).equals(StringUtil.ATAB))
+                if (String.valueOf(text.charAt(rowOffset + i)).equals(StringUtil.ATAB)) {
                     calcCol += (TABWIDTH - (calcCol%TABWIDTH));
-                else
+                }
+                else {
                     calcCol ++;
+                }
             }
             return calcCol;
         }

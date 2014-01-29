@@ -132,7 +132,8 @@ public class CCText extends JScrollPane {
         return file.getParentFile();
     }
     
+    @Override
     public void setLocale(Locale l) {
-        jTA.setDefaultLocale(l);
+        JTextArea.setDefaultLocale(l);
     }
 }

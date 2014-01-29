@@ -86,8 +86,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         if (cct.hasFile) {
             ccFB.makeFileBrowser(cct.getDefaultDir());
         }
-        else
+        else {
             ccFB.makeFileBrowser(ccf.getDefaultDir());
+        }
         //ccFB.setCCFrame(mainFrame);
         ccFB.setEventCather(this);
         
@@ -117,8 +118,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         if (cct.hasFile) {
             ccFB.makeFileBrowser(cct.getDefaultDir());
         }
-        else
+        else {
             ccFB.makeFileBrowser(ccf.getDefaultDir());
+        }
         //ccFB.setCCFrame(mainFrame);
         ccFB.setEventCather(this);
         
@@ -151,12 +153,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             jTA.addMouseListener(this);
             jTA.requestFocus();
             try {
-               cct.title.toString().toLowerCase();
+               //cct.title.toString().toLowerCase();
                if (cct.hasFile) {
                    iUI.setStatus(cct.file.getAbsolutePath());
                }
-               else
-                   iUI.setStatus(cct.title);
+               else {
+                    iUI.setStatus(cct.title);
+                }
             }
            catch (NullPointerException e) {
                //Do nothing
@@ -350,8 +353,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 File saveFile = cct.file;
                 saveFunction(saveFile);
             }
-            else
+            else {
                 saveAsFunction();
+            }
         }
         else if (action.equals("CLOSETAB")) {
             int tabCount = ccTT.getTabCount();        
@@ -360,11 +364,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 if (!cct.hasFile && !cct.changed) {
                     //Do nothing if only 1 unsaved, blank tab is left
                 }
-                else
+                else {
                     closeFunction();
+                }
             }
-            else
+            else {
                 closeFunction();
+            }
         }
         else if (action.equals("VBS")) {
             ccr.vbs();
@@ -480,7 +486,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                     }
                     if (!opened) {
                         openNewFunction(openFile);
-                        opened = true;
                     }
                 }
                 jTA.setCaretPosition(0);
@@ -548,7 +553,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                     }
                     if (!opened) {
                         openNewFunction(openFile);
-                        opened = true;
                     }
                 }
             }
@@ -642,11 +646,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
     result = StringUtil.processUnicodeToASCII(result);
@@ -672,11 +674,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
@@ -702,11 +702,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
@@ -755,7 +753,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             int startPos = jTA.getSelectionStart();
             String result = jTA.getSelectedText();
             int firstApos = result.indexOf("'");
-            String temp = "=";
+            String temp;
             TestInfo.testWriteLn("First Apos: " + firstApos);
             if (firstApos == 0) {
                  result = result.replaceFirst("\\Q'\\E","");

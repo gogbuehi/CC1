@@ -136,8 +136,9 @@ public class CCFind implements CaretListener,ActionListener {
         String [] newArray;
         String strOld = jtfFind.getText();
         String strNew = jtfReplace.getText();
-        if (strOld.equals("") || strNew.equals(""))
+        if (strOld.equals("") || strNew.equals("")) {
             return;
+        }
         newArray = strNew.split("\\Q,\\E");
         oldArray = strOld.split("\\Q,\\E");
         String inText = jta.getText();
@@ -238,7 +239,6 @@ public class CCFind implements CaretListener,ActionListener {
                     
                     //h.removeHighlight(oldHighlightPainter);
                     //h.changeHighlight(oldHighlightPainter,lastHighlight[0],lastHighlight[1]);
-                    oldHighlightPainter = new MyHighlightPainter(Color.GRAY);
                     
                     h.addHighlight(index,index+text.length(),myHighlightPainter);
                     jtfFind.setBackground(Color.WHITE);
@@ -370,10 +370,12 @@ public class CCFind implements CaretListener,ActionListener {
         
         text = text.replaceAll("\\Q^^\\E","~!~");
         do {
-            if (text.indexOf("^*^*") != -1) 
+            if (text.indexOf("^*^*") != -1) {
                 text = text.replaceAll("\\Q^*^*\\E","^*");
-            if (text.indexOf("^*^#") != -1)
+            }
+            if (text.indexOf("^*^#") != -1) {
                 text = text.replaceAll("\\Q^*^#\\E","^*");
+            }
         }
         while ((text.indexOf("^*^*") != -1) || (text.indexOf("^*^#") != -1));
         text = text.replaceAll("\\Q~!~\\E","^^");
@@ -431,8 +433,9 @@ public class CCFind implements CaretListener,ActionListener {
                     if ((sw != -1) && (mw != -1)) {
                         if (sw < mw) {
                             text = text.replaceFirst("\\Q^#\\E","`#");
-                            if (sw == 0)
+                            if (sw == 0) {
                                 ws.type = 1;
+                            }
                             else {
                                 next.setStart(sw,1);
                                 index = next.start;
@@ -441,8 +444,9 @@ public class CCFind implements CaretListener,ActionListener {
                         }
                         else {
                             text = text.replaceFirst("\\Q^*\\E","`*");
-                            if (mw == 0)
+                            if (mw == 0) {
                                 ws.type = 2;
+                            }
                             else {
                                 next.setStart(mw,2);
                                 index = next.start;
@@ -452,8 +456,9 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     else if (sw != -1) {
                         text = text.replaceFirst("\\Q^#\\E","`#");
-                        if (sw == 0)
+                        if (sw == 0) {
                             ws.type = 1;
+                        }
                         else {
                             next.setStart(sw,1);
                             index = next.start;
@@ -462,8 +467,9 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     else {
                         text = text.replaceFirst("\\Q^*\\E","`*");
-                        if (mw == 0)
+                        if (mw == 0) {
                             ws.type = 2;
+                        }
                         else {
                             next.setStart(mw,2);
                             index = next.start;
@@ -504,7 +510,7 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     next = next.next;
                 }
-                text = text.replace("~!~","^");
+                //text = text.replace("~!~","^");
                 next = ws;
                 boolean keepLooking = true;
                 int bSpace,bTab,bNewline,bIndex;
@@ -518,11 +524,13 @@ public class CCFind implements CaretListener,ActionListener {
                             else {
                                 if (next.start == 0) {
                                     //currIndex = index + 1;
-                                    if (ci == -1)
+                                    if (ci == -1) {
                                         ci = index + 1;
+                                    }
                                 }
-                                if (ci == -1)
+                                if (ci == -1) {
                                     ci = index + 1;
+                                }
                                 if (next.next.start != -1) {
                                     currIndex_w = index + next.seg.length();
                                 }
@@ -545,11 +553,13 @@ public class CCFind implements CaretListener,ActionListener {
                             else {
                                 if (next.start == 0) {
                                     //currIndex = index + 1;
-                                    if (ci == -1)
+                                    if (ci == -1) {
                                         ci = index + 1;
+                                    }
                                 }
-                                if (ci == -1)
+                                if (ci == -1) {
                                     ci = index + 1;
+                                }
                                 if (next.next.start != -1) {
                                     next.seg = String.valueOf(jText.charAt(currIndex_w));
                                     currIndex_w = index + next.seg.length();
@@ -607,11 +617,13 @@ public class CCFind implements CaretListener,ActionListener {
                                 next.seg = jText.substring(currIndex_w,index);
                                 if (next.start == 0) {
                                     //currIndex = index + 1;
-                                    if (ci == -1)
+                                    if (ci == -1) {
                                         ci = index + 1;
+                                    }
                                 }
-                                if (ci == -1)
+                                if (ci == -1) {
                                     ci = index + 1;
+                                }
                                 if (next.next.start != -1) {
                                     currIndex_w = index + next.seg.length();
                                 }
@@ -624,16 +636,18 @@ public class CCFind implements CaretListener,ActionListener {
                             //Do nothing
                             break;
                     }
-                    if (keepLooking)
+                    if (keepLooking) {
                         next = next.next;
+                    }
                     else {
                         if (tryAgain) {
                             next = ws;
                             tryAgain = false;
                             keepLooking = true;
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
                 }
                 /*
@@ -738,8 +752,9 @@ public class CCFind implements CaretListener,ActionListener {
                     if ((sw != -1) && (mw != -1)) {
                         if (sw < mw) {
                             text = text.replaceFirst("\\Q^#\\E","`#");
-                            if (sw == 0)
+                            if (sw == 0) {
                                 ws.type = 1;
+                            }
                             else {
                                 next.setStart(sw,1);
                                 index = next.start;
@@ -748,8 +763,9 @@ public class CCFind implements CaretListener,ActionListener {
                         }
                         else {
                             text = text.replaceFirst("\\Q^*\\E","`*");
-                            if (mw == 0)
+                            if (mw == 0) {
                                 ws.type = 2;
+                            }
                             else {
                                 next.setStart(mw,2);
                                 index = next.start;
@@ -759,8 +775,9 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     else if (sw != -1) {
                         text = text.replaceFirst("\\Q^#\\E","`#");
-                        if (sw == 0)
+                        if (sw == 0) {
                             ws.type = 1;
+                        }
                         else {
                             next.setStart(sw,1);
                             index = next.start;
@@ -769,8 +786,9 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     else {
                         text = text.replaceFirst("\\Q^*\\E","`*");
-                        if (mw == 0)
+                        if (mw == 0) {
                             ws.type = 2;
+                        }
                         else {
                             next.setStart(mw,2);
                             index = next.start;
@@ -811,7 +829,7 @@ public class CCFind implements CaretListener,ActionListener {
                     }
                     next = next.next;
                 }
-                text = text.replace("~!~","^");
+                //text = text.replace("~!~","^");
                 next = ws;
                 boolean keepLooking = true;
                 int bSpace,bTab,bNewline,bIndex;
@@ -824,8 +842,9 @@ public class CCFind implements CaretListener,ActionListener {
                             }
                             else {
                                 if (next.start == 0) {
-                                    if (ci == -1)
+                                    if (ci == -1) {
                                         ci = index + 1;
+                                    }
                                 }
                                 
                                 if (next.next.start != -1) {
@@ -849,11 +868,13 @@ public class CCFind implements CaretListener,ActionListener {
                             }
                             else {
                                 if (next.start == 0) {
-                                    if (ci == -1)
+                                    if (ci == -1) {
                                         ci = index + 1;
+                                    }
                                 }
-                                if (ci == -1)
+                                if (ci == -1) {
                                     ci = index + 1;
+                                }
                                 if (next.next.start != -1) {
                                     next.seg = String.valueOf(jText.charAt(currIndex_w));
                                     currIndex_w = index + next.seg.length();
@@ -912,8 +933,9 @@ public class CCFind implements CaretListener,ActionListener {
                                 if (next.start == 0) {
                                     
                                 }
-                                if (ci == -1)
+                                if (ci == -1) {
                                     ci = index + 1;
+                                }
                                 if (next.next.start != -1) {
                                     currIndex_w = index + next.seg.length();
                                 }
@@ -926,16 +948,18 @@ public class CCFind implements CaretListener,ActionListener {
                             //Do nothing
                             break;
                     }
-                    if (keepLooking)
+                    if (keepLooking) {
                         next = next.next;
+                    }
                     else {
                         if (tryAgain) {
                             next = ws;
                             tryAgain = false;
                             keepLooking = true;
                         }
-                        else
+                        else {
                             break;
+                        }
                     }
                 }
                 TestInfo.testWriteLn("Find String: " + ws.makeFindString());

@@ -74,8 +74,9 @@ public class JTabTracker implements DocumentListener  {
             if (cct.undo == null) {
                 TestInfo.testWriteLn("New Undo");
                 cct.undo = new UndoManager();
-            } else
+            } else {
                 TestInfo.testWriteLn("Old Undo");
+            }
             undo = (UndoManager) cct.undo;
             doc.addUndoableEditListener(myel);
             tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
@@ -122,10 +123,12 @@ public class JTabTracker implements DocumentListener  {
         ccTT.setTitleAt(ccTT.getSelectedIndex(),"[-" + cct.title + "-]");
     }
     public void docReadOnly(boolean tf) {
-        if (tf)
+        if (tf) {
             docReadOnly();
-        else
+        }
+        else {
             docUnchanged();
+        }
     }
     public void docUnsaved() {
         ccTT.setTitleAt(ccTT.getSelectedIndex(),"~" + cct.title + "~");

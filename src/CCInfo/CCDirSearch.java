@@ -67,10 +67,12 @@ public class CCDirSearch implements CaretListener, ActionListener {
             this.currDir = currDir;
         }
         
-        if (ccfb.currentIsRoot())
+        if (ccfb.currentIsRoot()) {
             ccfb.setRoots();
-        else
+        }
+        else {
             ccfb.setDirList(text,this.currDir);
+        }
         //TestInfo.testWriteLn("Curr. Dir: " + this.currDir.getName());
     }
     

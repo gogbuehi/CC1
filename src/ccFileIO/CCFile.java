@@ -33,8 +33,9 @@ public class CCFile {
             writeLns(fi.readLines(),50);
             return true;
         }
-        else
+        else {
             return false;
+        }
     }
     
     /** Read in the text of a file */
@@ -44,8 +45,9 @@ public class CCFile {
             writeLns(fi.readLines(),50);
             return true;
         }
-        else
+        else {
             return false;
+        }
     }
     
     /** Get a file to open via the file chooser */
@@ -150,8 +152,9 @@ public class CCFile {
     }
     
     public void writeLns(String [] text) {
-        for (int i = 0; i < text.length; i++)
+        for (int i = 0; i < text.length; i++) {
             writeLn(text[i]);
+        }
     }
     
     public void writeLns(String [] text, int buffer) {
@@ -161,10 +164,12 @@ public class CCFile {
                 write(bufferText);
                 bufferText = "";
             }
-            if (i == (text.length-1))
+            if (i == (text.length-1)) {
                 bufferText += text[i];
-            else
+            }
+            else {
                 bufferText += text[i] + "\n";
+            }
         }
         write(bufferText);
     }

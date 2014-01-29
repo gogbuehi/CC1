@@ -23,15 +23,18 @@ public class Main extends JApplet {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new CCFrame("CC v0.2.4.1");
+        new CCFrame("CC v0.2.4.2");
         //new Main();
     }
+    @Override
     public void init() {
         new Main();
     }
+    @Override
     public void start() {
         
     }
+    @Override
     public void stop() {
         
     }

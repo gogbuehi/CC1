@@ -30,9 +30,10 @@ public class FileAccess {
         dir = fileChooser.getCurrentDirectory();
     }
     public void setDefaultDirectory(String dir) {
-        if (Validation.isValidDirectory(dir))
+        if (Validation.isValidDirectory(dir)) {
             this.dir = new File(dir);
-            fileChooser.setCurrentDirectory(this.dir);
+        }
+        fileChooser.setCurrentDirectory(this.dir);
     }
     public void setDefaultDirectory(Component parent) {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -55,8 +56,9 @@ public class FileAccess {
         if (chsrInt == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
         }
-        else
+        else {
             return null;
+        }
     }
     
     /** Open a file chooser to choose a save file */
@@ -67,8 +69,9 @@ public class FileAccess {
         if (chsrInt == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
         }
-        else
+        else {
             return null;
+        }
         
     }
     
@@ -79,8 +82,9 @@ public class FileAccess {
         if (chsrInt == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
         }
-        else
+        else {
             return null;
+        }
     }
     
     /*

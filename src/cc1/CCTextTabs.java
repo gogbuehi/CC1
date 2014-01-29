@@ -6,7 +6,6 @@
 
 package cc1;
 
-import Utilities.TestInfo;
 import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
@@ -123,15 +122,17 @@ public class CCTextTabs extends JTabbedPane {
     
     public void closeTab(int index) {
         //TestInfo.testWriteLn("ccTT Closing tab");
-        if (getTabCount() == 1)
+        if (getTabCount() == 1) {
             defaultHold = true;
+        }
         this.remove(index);
         defaultHold = false;
     }
     
     public void checkForNoTabs() {
-        if (getTabCount() < 1)
+        if (getTabCount() < 1) {
             newTab();
+        }
     }
     
     public void setEventCatcher(EventCatcher ec) {

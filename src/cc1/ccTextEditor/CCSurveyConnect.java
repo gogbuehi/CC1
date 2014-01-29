@@ -3,16 +3,20 @@
  *
  * Created on May 30, 2006, 12:33 PM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Updated on Jan 29, 2014, 00:16
+ * 
+ * This class is not full implemented, so many elements have warnings about
+ * variables not being used and such. This class is now obsolete, and can be
+ * removed during more advanced refactoring.
+ * 
  */
 
 package cc1.ccTextEditor;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 /**
  *
  * @author goodwin.ogbuehi

@@ -47,7 +47,7 @@ public class LookupItem {
     
     public int findNextIndex(String searchString) {
         int tempIndex = searchString.length();
-        int lastIndex = -1;
+        int lastIndex;
         for (int i = 0; i < mLookupString.length; i++) {
             lastIndex = findNextItem(searchString,i);
             if (lastIndex != -1) {
