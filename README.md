@@ -19,3 +19,5 @@ While seemingly quaint now, the features I implemented for this application incl
 This app came in handy, and I regularly developed using it. Had I more time, I considered trying to make it more accessible to other users, but IDEs quickly suprassed my featureset. Still, I enjoy that I can still compile the application and run it as a standalone app. I would have ported this to Android some time ago, but the TextViews don't offer a comparable API as JTextAreas. I think I can make up for the deficiency, should I attempt to port it again.
 
 I started writing features for the editor to try to automate programming PHP apps, but Netbeans released a very reliable PHP editor, so I abandoned the effort.
+
+The Application's Main class is:  src/cc1/Main.java 
