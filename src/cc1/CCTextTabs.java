@@ -6,10 +6,10 @@
 
 package cc1;
 
+import cc1.ccTextEditor.CCTextArea;
 import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -97,12 +97,12 @@ public class CCTextTabs extends JTabbedPane {
         newText.setFile(openFile);
         setCurrentFile();
     }
-    public JTextArea getCurrentJTA() {
+    public CCTextArea getCurrentJTA() {
         //int currentIndex = getSelectedIndex();
         //CCTab currentTab = (CCTab) getSelectedComponent();
         if (!defaultHold) {
             CCText currentTab = (CCText) getSelectedComponent();
-            return currentTab.th.getJTA();
+            return currentTab.getJTA();
         }
         return null;
     }

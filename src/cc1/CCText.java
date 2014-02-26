@@ -7,6 +7,7 @@
 package cc1;
 
 import Utilities.Validation;
+import cc1.ccTextEditor.CCTextArea;
 import cc1.ccTextEditor.TabHold;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,33 +15,32 @@ import java.io.File;
 import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  *
  * @author  goodwin.ogbuehi
  */
 public class CCText extends JScrollPane {
-    JTextArea jTA;
+    //JTextArea jTA;
+    CCTextArea jTA;
     //JScrollPane mainSP;
     public File file;
     public boolean hasFile,changed,readOnly;
     public String title;
-    public TabHold th;
     
     public Object undo;
 
     public CCText() {
         super();
-        jTA = new JTextArea("",20,80);
+        jTA = new CCTextArea("",20,80);
         //jTA = new JTextArea("");
-        jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        //jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        jTA.setFont(new Font("Euphemia", Font.PLAIN, 14));
         jTA.setDisabledTextColor(Color.GREEN);
         jTA.setLineWrap(false);
         jTA.setWrapStyleWord(false);
         //mainSP = new JScrollPane(mainArea);
         this.setViewportView(jTA);
-        th = new TabHold(this);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         hasFile = false;
         changed = false;
@@ -48,14 +48,14 @@ public class CCText extends JScrollPane {
     }
     public CCText(String title) {
         super();
-        jTA = new JTextArea("",20,80);
+        jTA = new CCTextArea("",20,80);
         //jTA = new JTextArea("");
-        jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        //jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        jTA.setFont(new Font("Euphemia", Font.PLAIN, 14));
         jTA.setLineWrap(false);
         jTA.setWrapStyleWord(false);
         //mainSP = new JScrollPane(mainArea);
         this.setViewportView(jTA);
-        th = new TabHold(this);
         this.title = title;
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         hasFile = false;
@@ -64,14 +64,14 @@ public class CCText extends JScrollPane {
     }
     public CCText(int defaultTab) {
         super();
-        jTA = new JTextArea("",20,80);
+        jTA = new CCTextArea("",20,80);
         //jTA = new JTextArea("");
-        jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        //jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        jTA.setFont(new Font("Euphemia", Font.PLAIN, 14));
         jTA.setLineWrap(false);
         jTA.setWrapStyleWord(false);
         //mainSP = new JScrollPane(mainArea);
         this.setViewportView(jTA);
-        th = new TabHold(this);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         hasFile = false;
         changed = false;
@@ -79,14 +79,14 @@ public class CCText extends JScrollPane {
     }
     public CCText(File textFile) {
         super();
-        jTA = new JTextArea("",20,80);
+        jTA = new CCTextArea("",20,80);
         //jTA = new JTextArea("");
-        jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        //jTA.setFont(new Font("Courier New", Font.PLAIN, 14));
+        jTA.setFont(new Font("Euphemia", Font.PLAIN, 14));
         jTA.setLineWrap(false);
         jTA.setWrapStyleWord(false);
         //mainSP = new JScrollPane(mainArea);
         this.setViewportView(jTA);
-        th = new TabHold(this);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         file = textFile;
         hasFile = true;
@@ -106,12 +106,8 @@ public class CCText extends JScrollPane {
     }
      */
     
-    public JTextArea getJTA() {
+    public CCTextArea getJTA() {
         return jTA;
-    }
-    
-    public TabHold getTabHold() {
-        return th;
     }
     
     public void setFile(File file) {
@@ -134,6 +130,6 @@ public class CCText extends JScrollPane {
     
     @Override
     public void setLocale(Locale l) {
-        JTextArea.setDefaultLocale(l);
+        CCTextArea.setDefaultLocale(l);
     }
 }

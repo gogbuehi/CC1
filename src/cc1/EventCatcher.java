@@ -13,9 +13,9 @@ import Utilities.Validation;
 import cc1.TabUtilities.JTabTracker;
 import cc1.ccTextEditor.CCFind;
 import cc1.ccTextEditor.CCReplace;
+import cc1.ccTextEditor.CCTextArea;
 import cc1.ccTextEditor.ProcessPaste;
 import cc1.ccTextEditor.StringUtil;
-import cc1.ccTextEditor.TabHold;
 import ccDialogs.CCDialog;
 import ccFileIO.CCFile;
 import java.awt.Toolkit;
@@ -32,7 +32,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -44,13 +43,12 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     static final String newline = "\n";
     
     CCTextTabs ccTT;
-    JTextArea jTA;
+    CCTextArea jTA;
     CCFile ccf;
     
     String text;
     
     JTabTracker jtt;
-    TabHold th;
     CCReplace ccr;
     
     InfoUI iUI;
@@ -76,7 +74,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         jTA = ccTT.getCurrentJTA();
         jTA.addKeyListener(this);
         jTA.addMouseListener(this);
-        th = cct.getTabHold();
         ccr = new CCReplace(jTA);
         ccTT.addChangeListener(this);
         jtt = new JTabTracker(ccTT);
@@ -108,7 +105,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         jTA = ccTT.getCurrentJTA();
         jTA.addKeyListener(this);
         jTA.addMouseListener(this);
-        th = cct.getTabHold();
         ccr = new CCReplace(jTA);
         ccTT.addChangeListener(this);
         jtt = new JTabTracker(ccTT);
@@ -144,7 +140,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             jtt.setJTT(ccTT);
             
             //th.setJTA(jTA);
-            th = cct.getTabHold();
             ccr.setJTA(jTA);
             
             ccFind.setJTA(jTA);
@@ -306,8 +301,11 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             setJTA(ccTT);
     }
     private void runTabHold01() {
-        iUI.setRow(th.getRow());
-        iUI.setCol(th.getCalculatedCol());
+        //iUI.setRow(th.getRow());
+        //iUI.setCol(th.getCalculatedCol());
+        
+        iUI.setRow(jTA.getRow());
+        iUI.setCol(jTA.getCalculatedCol());
     }
     private void runTabHold02(KeyEvent e) {
         int id = e.getID();
@@ -317,7 +315,8 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             if (newline.equals(String.valueOf(c))) {
                 TestInfo.testWriteLn("Status");
                 if (enterPressed) {
-                    th.processNewline();
+                    //th.processNewline();
+                    jTA.processNewline();
                 }
             }
         }
@@ -652,7 +651,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       }
     }
     result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    String indent = StringUtil.getIndent(jTA.getLine());
     //result = ProcessPaste.formatLine(result,indent);
     //result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -680,7 +679,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    String indent = StringUtil.getIndent(jTA.getLine());
     //result = ProcessPaste.formatLine(result,indent);
     result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -708,7 +707,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    String indent = StringUtil.getIndent(jTA.getLine());
     result = ProcessPaste.formatLine(result,indent);
     //result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -717,7 +716,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public void setFormatIndent() {
         if (jTA.getSelectionStart() != jTA.getSelectionEnd()) {
             String result = jTA.getSelectedText();
-            String indent = StringUtil.getIndent(th.getLine());
+            String indent = StringUtil.getIndent(jTA.getLine());
             result = ProcessPaste.formatLine(result,indent);
             jTA.replaceSelection(result);
             //result = ProcessPaste.basicLine(result,indent);
@@ -726,7 +725,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public void setBasicIndent() {
         if (jTA.getSelectionStart() != jTA.getSelectionEnd()) {
             String result = jTA.getSelectedText();
-            String indent = StringUtil.getIndent(th.getLine());
+            String indent = StringUtil.getIndent(jTA.getLine());
             result = ProcessPaste.basicLine(result,indent);
             jTA.replaceSelection(result);
         }
