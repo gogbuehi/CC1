@@ -274,4 +274,28 @@ public class CCTextArea extends JTextArea{
         }
     }
     
+    public void setLanguageMap() {
+        mTypingMonitor.loadCharacterMapFromFile();
+    }
+    
+    public void disableLanguageMap() {
+        mTypingMonitor.disableLanguageMap();
+    }
+    
+    public void enableLanguageMap() {
+        mTypingMonitor.enableLanguageMap();
+    }
+    
+    public String getLanguageMapName() {
+        return mTypingMonitor.toString();
+    }
+    
+    public boolean hasLanguageMap() {
+        return mTypingMonitor.hasLanguageMapLoaded();
+    }
+    
+    public boolean isUsingLanguageMap() {
+        return mTypingMonitor.usingCharacterMap();
+    }
+    
 }

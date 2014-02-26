@@ -25,7 +25,9 @@ public class CCText extends JScrollPane {
     CCTextArea jTA;
     //JScrollPane mainSP;
     public File file;
-    public boolean hasFile,changed,readOnly;
+    public boolean hasFile,changed,readOnly,unsaved;
+    public String languageMapName;
+    //boolean changed,readOnly,unsaved;
     public String title;
     
     public Object undo;
@@ -45,6 +47,7 @@ public class CCText extends JScrollPane {
         hasFile = false;
         changed = false;
         readOnly = false;
+        languageMapName = "";
     }
     public CCText(String title) {
         super();
@@ -61,6 +64,7 @@ public class CCText extends JScrollPane {
         hasFile = false;
         changed = false;
         readOnly = false;
+        languageMapName = "";
     }
     public CCText(int defaultTab) {
         super();
@@ -76,6 +80,7 @@ public class CCText extends JScrollPane {
         hasFile = false;
         changed = false;
         readOnly = false;
+        languageMapName = "";
     }
     public CCText(File textFile) {
         super();
@@ -93,6 +98,7 @@ public class CCText extends JScrollPane {
         changed = false;
         readOnly = Validation.isReadOnly(file);
         setReadOnly(readOnly);
+        languageMapName = "";
     }
 
     public void setReadOnly(boolean isReadOnly) {

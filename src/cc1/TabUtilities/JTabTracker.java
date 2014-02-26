@@ -27,13 +27,14 @@ import javax.swing.undo.UndoManager;
  *
  * @author Goodwin
  */
-public class JTabTracker implements DocumentListener  {
+public final class JTabTracker implements DocumentListener  {
     CCTextTabs ccTT;
     CCText cct;
     JTextArea jta;
     Document doc;
     String tabTitle;
-    boolean changed,readOnly;
+    //boolean changed,readOnly,unsaved;
+    //String languageMapName;
     
     UndoManager undo = new UndoManager();
     MyUndoableEditListener myel;
@@ -53,9 +54,9 @@ public class JTabTracker implements DocumentListener  {
         myel = new MyUndoableEditListener();
         cct.undo = undo;
         doc.addUndoableEditListener(myel);
-        tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
-        changed = cct.changed;
-        readOnly = cct.readOnly;
+        getCurrentTitle();
+        //tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
+        
     }
     
     public void setJTT(CCTextTabs ccTT) {
@@ -79,7 +80,8 @@ public class JTabTracker implements DocumentListener  {
             }
             undo = (UndoManager) cct.undo;
             doc.addUndoableEditListener(myel);
-            tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
+            //tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
+            getCurrentTitle();
             //tabTitle = ccTT.file.getName();
         }
     }
@@ -106,33 +108,54 @@ public class JTabTracker implements DocumentListener  {
             doc.addDocumentListener(this);
             undo = (UndoManager) cct.undo;
             doc.addUndoableEditListener(myel);
-            tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
+            //tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
+            getCurrentTitle();
             //tabTitle = ccTT.file.getName();
         }
     }
     
+    public void updateTabTitle() {
+        String tempTitle = cct.title;
+        if (cct.readOnly) {
+            tempTitle = "[-" + tempTitle + "-]";
+        }
+        if (cct.unsaved) {
+            tempTitle = "~" + tempTitle + "~";
+        }
+        if (cct.changed) {
+            tempTitle = tempTitle + "*";
+        }
+        if (!cct.languageMapName.equals("")) {
+            tempTitle = tempTitle + "(" + cct.languageMapName + ")";
+        }
+        ccTT.setTitleAt(ccTT.getSelectedIndex(),tempTitle);
+    }
+    
     public void docChanged() {
-        ccTT.setTitleAt(ccTT.getSelectedIndex(),cct.title + "*");
         cct.changed = true;
+        updateTabTitle();
     }
     public void docUnchanged() {
-        ccTT.setTitleAt(ccTT.getSelectedIndex(),cct.title);
         cct.changed = false;
+        updateTabTitle();
     }
     public void docReadOnly() {
-        ccTT.setTitleAt(ccTT.getSelectedIndex(),"[-" + cct.title + "-]");
+        cct.readOnly = true;
+        updateTabTitle();
     }
     public void docReadOnly(boolean tf) {
-        if (tf) {
-            docReadOnly();
-        }
-        else {
-            docUnchanged();
-        }
+        cct.readOnly = tf;
+        updateTabTitle();
     }
     public void docUnsaved() {
-        ccTT.setTitleAt(ccTT.getSelectedIndex(),"~" + cct.title + "~");
+        cct.unsaved = true;
+        updateTabTitle();
     }
+    public void docLanguageMap(String languageMapName) {
+        cct.languageMapName = languageMapName;
+        updateTabTitle();
+    }
+    
     public void getCurrentTitle() {
         tabTitle = ccTT.getTitleAt(ccTT.getSelectedIndex());
     }

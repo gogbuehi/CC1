@@ -192,7 +192,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 doAction("OPENAS");
             }
         }
-        else if (e.isControlDown()) {
+        else if (e.isMetaDown()) {
             //TestInfo.testWriteLn("Control down");
             if (keyCode == KeyEvent.VK_N) {
                 doAction("NEW");
@@ -208,14 +208,18 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 //TestInfo.testWriteLn("Should close");
                 doAction("CLOSETAB");
             }
-            else if (keyCode == KeyEvent.VK_J) {
-                doAction("VBS");
-            }
-            else if (keyCode == KeyEvent.VK_K) {
-                doAction("VBSH");
-            }
             else if (keyCode == KeyEvent.VK_L) {
-                doAction("VBH");
+                if (jTA.hasLanguageMap()) {
+                    if (jTA.isUsingLanguageMap()) {
+                        doAction("REMOVE_LANGUAGE_MAP");
+                    }
+                    else {
+                        doAction("ENABLE_LAST_LANGUAGE_MAP");
+                    }
+                }
+                else {
+                    doAction("SELECT_LANGUAGE_MAP");
+                }
             }
             else if (keyCode == KeyEvent.VK_Z) {
                 doAction("UNDO");
@@ -371,8 +375,17 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 closeFunction();
             }
         }
-        else if (action.equals("VBS")) {
-            ccr.vbs();
+        else if (action.equals("SELECT_LANGUAGE_MAP")) {
+            jTA.setLanguageMap();
+            jtt.docLanguageMap(jTA.getLanguageMapName());
+        }
+        else if (action.equals("REMOVE_LANGUAGE_MAP")) {
+            jTA.disableLanguageMap();
+            jtt.docLanguageMap("");
+        }
+        else if (action.equals("ENABLE_LAST_LANGUAGE_MAP")) {
+            jTA.enableLanguageMap();
+            jtt.docLanguageMap(jTA.getLanguageMapName());
         }
         else if (action.equals("VBSH")) {
             ccr.vbsh();
