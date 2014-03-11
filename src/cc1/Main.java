@@ -14,8 +14,9 @@ import javax.swing.JApplet;
  */
 public class Main extends JApplet {
     /** Creates a new instance of Main */
+    public final static String VER = "CC v0.3.0.0";
     public Main() {
-        setContentPane(new CCAppletFrame("CC v0.3.0.0"));
+        setContentPane(new CCAppletFrame(VER));
     }
     
     /**
@@ -23,7 +24,7 @@ public class Main extends JApplet {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new CCFrame("CC v0.3.0.0");
+        new CCFrame(VER);
         //new Main();
     }
     @Override

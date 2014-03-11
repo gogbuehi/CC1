@@ -59,7 +59,7 @@ public class CCTextTabs extends JTabbedPane {
         String tabTitle = "untitled-" + tabCounter;
         CCText newText = new CCText(tabTitle);
         int selectedIndex = getSelectedIndex();
-        tabCounter++;
+        incrementCounter();
         
         //add(tabTitle,newTab);
         //insertTab(tabTitle, null,newTab,tabTitle,selectedIndex+1);
@@ -72,7 +72,7 @@ public class CCTextTabs extends JTabbedPane {
         //CCTab newTab = new CCTab();
         CCText newText = new CCText(openFile);
         int selectedIndex = getSelectedIndex();
-        tabCounter++;
+        incrementCounter();
         String tabTitle = openFile.getName();
         //add(tabTitle,newTab);
         //insertTab(tabTitle, null,newTab,tabTitle,selectedIndex+1);
@@ -137,5 +137,33 @@ public class CCTextTabs extends JTabbedPane {
     
     public void setEventCatcher(EventCatcher ec) {
         this.ec = ec;
+    }
+    
+    public CCText[] getAllTextTabs() {
+        int tabCount = getTabCount();
+        CCText[] allTabs = new CCText[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = (CCText) getComponentAt(i);
+        }
+        
+        return allTabs;
+    }
+    
+    public String[] getAllTextTabConfigs() {
+        int tabCount = getTabCount();
+        String[] allTabs = new String[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = ((CCText) getComponentAt(i)).toConfig();
+        }
+        
+        return allTabs;
+    }
+    
+    public void incrementCounter() {
+        tabCounter++;
+    }
+    
+    public void setCounter(int value) {
+        tabCounter = value;
     }
 }

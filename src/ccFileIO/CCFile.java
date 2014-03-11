@@ -91,6 +91,12 @@ public class CCFile {
         return false;
     }
     
+    public boolean saveFile(String filename, String fileContents) {
+        File file = new File(filename);
+        setText(fileContents);
+        return saveFile(file);
+    }
+    
     /** Save the text to a file */
     public boolean saveFile(CCTextTabs ccTT, File file) {
         String tempText = text;

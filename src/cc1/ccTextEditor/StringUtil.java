@@ -10,6 +10,7 @@
 package cc1.ccTextEditor;
 
 import Utilities.TestInfo;
+import java.util.Random;
 
 /**
  *
@@ -256,5 +257,18 @@ public class StringUtil {
         //output = Convert.toBase64String(Convert.fromBase64String(input));
         //entrArea.setText(output);
         return output;
+    }
+    
+    public static final String RANDOM_CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    
+    public static String generateRandomString(int characterCount) {
+        String result = "";
+        int j;
+        Random rand = new Random(); 
+        for (int i = 0; i < characterCount; i++) {
+            j = Math.abs(rand.nextInt(RANDOM_CHARACTERS.length()));
+            result += RANDOM_CHARACTERS.substring(j, j+1);
+        }
+        return result;
     }
 }

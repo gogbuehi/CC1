@@ -30,6 +30,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.event.ChangeEvent;
@@ -39,7 +41,7 @@ import javax.swing.event.ChangeListener;
  *
  * @author  goodwin.ogbuehi
  */
-public class EventCatcher implements KeyListener, MouseListener, ChangeListener,ClipboardOwner {
+public class EventCatcher implements KeyListener, MouseListener, ChangeListener, ClipboardOwner, WindowListener {
     static final String newline = "\n";
     
     CCTextTabs ccTT;
@@ -57,6 +59,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     
     CCFind ccFind;
     
+    Config config;
     //CCFrame jf;
     
     boolean enterPressed;
@@ -67,6 +70,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public EventCatcher(CCFrame mainFrame) {
         //jf = mainFrame;
         mainFrame.addKeyListener(this);
+        mainFrame.addWindowListener(this);
         ccTT = mainFrame.ccTT;
         CCText cct = (CCText) ccTT.getSelectedComponent();
         ccTT.addKeyListener(this);
@@ -663,7 +667,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         System.out.println(ex);
       }
     }
-    result = StringUtil.processUnicodeToASCII(result);
+    //result = StringUtil.processUnicodeToASCII(result);
     String indent = StringUtil.getIndent(jTA.getLine());
     //result = ProcessPaste.formatLine(result,indent);
     //result = ProcessPaste.basicLine(result,indent);
@@ -926,4 +930,58 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         return output;
     }
      */
+
+    public void windowOpened(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+        config = new Config();
+        config.processOpenFiles();
+        String[] fileConfigs = config.openFileConfigs;
+        CCText tempCCT;
+        for(int i = 0; i < fileConfigs.length; i++) {
+            TestInfo.testWriteLn("FILE CONFIG " + i + ": " + fileConfigs[i]);
+            ccTT.newTab();
+            tempCCT = (CCText) ccTT.getSelectedComponent();
+            tempCCT.processConfig(fileConfigs[i]);
+            //TestInfo.testWriteLn("Split name? " + tempCCT.title);
+            if (!tempCCT.changed) {
+                jtt.docUnchanged();
+            }
+            if (tempCCT.jTA.hasLanguageMap()) {
+                jTA.enableLanguageMap();
+                jtt.docLanguageMap(jTA.getLanguageMapName());
+            }
+            if (!tempCCT.hasFile) {
+                int tabCounter = Integer.parseInt(tempCCT.title.replaceAll("untitled-", ""));
+                ccTT.setCounter(tabCounter+1);
+                
+            }
+        }
+        ccTT.closeTab(0);
+    }
+
+    public void windowClosing(WindowEvent we) {
+        config.saveConfig();
+        config.saveOpenFiles(ccTT.getAllTextTabConfigs());
+        //ccTT.getAllTextTabConfigs()
+    }
+
+    public void windowClosed(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowIconified(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowDeiconified(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowActivated(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowDeactivated(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

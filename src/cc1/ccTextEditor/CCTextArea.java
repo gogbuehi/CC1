@@ -158,7 +158,7 @@ public class CCTextArea extends JTextArea{
     public void setSpecialCharacters(int line) {
         if (line >= 0) {
             String strLine = getLine(line);
-            String newLineText = mTypingMonitor.processLineOfText(strLine);
+            String newLineText = mTypingMonitor.processLineOfTextFullPass(strLine);
             TestInfo.testWriteLn("New Line: "+newLineText);
             setLine(newLineText,line);
             
@@ -276,6 +276,14 @@ public class CCTextArea extends JTextArea{
     
     public void setLanguageMap() {
         mTypingMonitor.loadCharacterMapFromFile();
+    }
+    
+    public void setLanguageMap(String languageMapFileName) {
+        mTypingMonitor.loadCharacterMap(languageMapFileName);
+    }
+    
+    public void loadLocalCharacterMap(String languageMapName) {
+        mTypingMonitor.loadLocalCharacterMap(languageMapName);
     }
     
     public void disableLanguageMap() {
