@@ -13,9 +13,9 @@ import Utilities.Validation;
 import cc1.TabUtilities.JTabTracker;
 import cc1.ccTextEditor.CCFind;
 import cc1.ccTextEditor.CCReplace;
+import cc1.ccTextEditor.CCTextArea;
 import cc1.ccTextEditor.ProcessPaste;
 import cc1.ccTextEditor.StringUtil;
-import cc1.ccTextEditor.TabHold;
 import ccDialogs.CCDialog;
 import ccFileIO.CCFile;
 import java.awt.Toolkit;
@@ -30,9 +30,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -40,17 +41,16 @@ import javax.swing.event.ChangeListener;
  *
  * @author  goodwin.ogbuehi
  */
-public class EventCatcher implements KeyListener, MouseListener, ChangeListener,ClipboardOwner {
+public class EventCatcher implements KeyListener, MouseListener, ChangeListener, ClipboardOwner, WindowListener {
     static final String newline = "\n";
     
     CCTextTabs ccTT;
-    JTextArea jTA;
+    CCTextArea jTA;
     CCFile ccf;
     
     String text;
     
     JTabTracker jtt;
-    TabHold th;
     CCReplace ccr;
     
     InfoUI iUI;
@@ -59,6 +59,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     
     CCFind ccFind;
     
+    Config config;
     //CCFrame jf;
     
     boolean enterPressed;
@@ -69,6 +70,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public EventCatcher(CCFrame mainFrame) {
         //jf = mainFrame;
         mainFrame.addKeyListener(this);
+        mainFrame.addWindowListener(this);
         ccTT = mainFrame.ccTT;
         CCText cct = (CCText) ccTT.getSelectedComponent();
         ccTT.addKeyListener(this);
@@ -76,7 +78,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         jTA = ccTT.getCurrentJTA();
         jTA.addKeyListener(this);
         jTA.addMouseListener(this);
-        th = cct.getTabHold();
         ccr = new CCReplace(jTA);
         ccTT.addChangeListener(this);
         jtt = new JTabTracker(ccTT);
@@ -86,8 +87,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         if (cct.hasFile) {
             ccFB.makeFileBrowser(cct.getDefaultDir());
         }
-        else
+        else {
             ccFB.makeFileBrowser(ccf.getDefaultDir());
+        }
         //ccFB.setCCFrame(mainFrame);
         ccFB.setEventCather(this);
         
@@ -107,7 +109,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         jTA = ccTT.getCurrentJTA();
         jTA.addKeyListener(this);
         jTA.addMouseListener(this);
-        th = cct.getTabHold();
         ccr = new CCReplace(jTA);
         ccTT.addChangeListener(this);
         jtt = new JTabTracker(ccTT);
@@ -117,8 +118,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         if (cct.hasFile) {
             ccFB.makeFileBrowser(cct.getDefaultDir());
         }
-        else
+        else {
             ccFB.makeFileBrowser(ccf.getDefaultDir());
+        }
         //ccFB.setCCFrame(mainFrame);
         ccFB.setEventCather(this);
         
@@ -142,7 +144,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             jtt.setJTT(ccTT);
             
             //th.setJTA(jTA);
-            th = cct.getTabHold();
             ccr.setJTA(jTA);
             
             ccFind.setJTA(jTA);
@@ -151,12 +152,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             jTA.addMouseListener(this);
             jTA.requestFocus();
             try {
-               cct.title.toString().toLowerCase();
+               //cct.title.toString().toLowerCase();
                if (cct.hasFile) {
                    iUI.setStatus(cct.file.getAbsolutePath());
                }
-               else
-                   iUI.setStatus(cct.title);
+               else {
+                    iUI.setStatus(cct.title);
+                }
             }
            catch (NullPointerException e) {
                //Do nothing
@@ -194,7 +196,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 doAction("OPENAS");
             }
         }
-        else if (e.isControlDown()) {
+        else if (e.isMetaDown()) {
             //TestInfo.testWriteLn("Control down");
             if (keyCode == KeyEvent.VK_N) {
                 doAction("NEW");
@@ -210,14 +212,18 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 //TestInfo.testWriteLn("Should close");
                 doAction("CLOSETAB");
             }
-            else if (keyCode == KeyEvent.VK_J) {
-                doAction("VBS");
-            }
-            else if (keyCode == KeyEvent.VK_K) {
-                doAction("VBSH");
-            }
             else if (keyCode == KeyEvent.VK_L) {
-                doAction("VBH");
+                if (jTA.hasLanguageMap()) {
+                    if (jTA.isUsingLanguageMap()) {
+                        doAction("REMOVE_LANGUAGE_MAP");
+                    }
+                    else {
+                        doAction("ENABLE_LAST_LANGUAGE_MAP");
+                    }
+                }
+                else {
+                    doAction("SELECT_LANGUAGE_MAP");
+                }
             }
             else if (keyCode == KeyEvent.VK_Z) {
                 doAction("UNDO");
@@ -303,8 +309,11 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             setJTA(ccTT);
     }
     private void runTabHold01() {
-        iUI.setRow(th.getRow());
-        iUI.setCol(th.getCalculatedCol());
+        //iUI.setRow(th.getRow());
+        //iUI.setCol(th.getCalculatedCol());
+        
+        iUI.setRow(jTA.getRow());
+        iUI.setCol(jTA.getCalculatedCol());
     }
     private void runTabHold02(KeyEvent e) {
         int id = e.getID();
@@ -314,7 +323,8 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             if (newline.equals(String.valueOf(c))) {
                 TestInfo.testWriteLn("Status");
                 if (enterPressed) {
-                    th.processNewline();
+                    //th.processNewline();
+                    jTA.processNewline();
                 }
             }
         }
@@ -350,8 +360,9 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 File saveFile = cct.file;
                 saveFunction(saveFile);
             }
-            else
+            else {
                 saveAsFunction();
+            }
         }
         else if (action.equals("CLOSETAB")) {
             int tabCount = ccTT.getTabCount();        
@@ -360,14 +371,25 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                 if (!cct.hasFile && !cct.changed) {
                     //Do nothing if only 1 unsaved, blank tab is left
                 }
-                else
+                else {
                     closeFunction();
+                }
             }
-            else
+            else {
                 closeFunction();
+            }
         }
-        else if (action.equals("VBS")) {
-            ccr.vbs();
+        else if (action.equals("SELECT_LANGUAGE_MAP")) {
+            jTA.setLanguageMap();
+            jtt.docLanguageMap(jTA.getLanguageMapName());
+        }
+        else if (action.equals("REMOVE_LANGUAGE_MAP")) {
+            jTA.disableLanguageMap();
+            jtt.docLanguageMap("");
+        }
+        else if (action.equals("ENABLE_LAST_LANGUAGE_MAP")) {
+            jTA.enableLanguageMap();
+            jtt.docLanguageMap(jTA.getLanguageMapName());
         }
         else if (action.equals("VBSH")) {
             ccr.vbsh();
@@ -480,7 +502,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                     }
                     if (!opened) {
                         openNewFunction(openFile);
-                        opened = true;
                     }
                 }
                 jTA.setCaretPosition(0);
@@ -548,7 +569,6 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
                     }
                     if (!opened) {
                         openNewFunction(openFile);
-                        opened = true;
                     }
                 }
             }
@@ -642,15 +662,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
-    result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    //result = StringUtil.processUnicodeToASCII(result);
+    String indent = StringUtil.getIndent(jTA.getLine());
     //result = ProcessPaste.formatLine(result,indent);
     //result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -672,15 +690,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    String indent = StringUtil.getIndent(jTA.getLine());
     //result = ProcessPaste.formatLine(result,indent);
     result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -702,15 +718,13 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
       catch (UnsupportedFlavorException ex){
         //highly unlikely since we are using a standard DataFlavor
         System.out.println(ex);
-        ex.printStackTrace();
       }
       catch (IOException ex) {
         System.out.println(ex);
-        ex.printStackTrace();
       }
     }
     //result = StringUtil.processUnicodeToASCII(result);
-    String indent = StringUtil.getIndent(th.getLine());
+    String indent = StringUtil.getIndent(jTA.getLine());
     result = ProcessPaste.formatLine(result,indent);
     //result = ProcessPaste.basicLine(result,indent);
     setClipboardContents(result);
@@ -719,7 +733,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public void setFormatIndent() {
         if (jTA.getSelectionStart() != jTA.getSelectionEnd()) {
             String result = jTA.getSelectedText();
-            String indent = StringUtil.getIndent(th.getLine());
+            String indent = StringUtil.getIndent(jTA.getLine());
             result = ProcessPaste.formatLine(result,indent);
             jTA.replaceSelection(result);
             //result = ProcessPaste.basicLine(result,indent);
@@ -728,7 +742,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public void setBasicIndent() {
         if (jTA.getSelectionStart() != jTA.getSelectionEnd()) {
             String result = jTA.getSelectedText();
-            String indent = StringUtil.getIndent(th.getLine());
+            String indent = StringUtil.getIndent(jTA.getLine());
             result = ProcessPaste.basicLine(result,indent);
             jTA.replaceSelection(result);
         }
@@ -755,7 +769,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
             int startPos = jTA.getSelectionStart();
             String result = jTA.getSelectedText();
             int firstApos = result.indexOf("'");
-            String temp = "=";
+            String temp;
             TestInfo.testWriteLn("First Apos: " + firstApos);
             if (firstApos == 0) {
                  result = result.replaceFirst("\\Q'\\E","");
@@ -916,4 +930,59 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
         return output;
     }
      */
+
+    public void windowOpened(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+        config = new Config();
+        config.processOpenFiles();
+        String[] fileConfigs = config.openFileConfigs;
+        CCText tempCCT;
+        for(int i = 0; i < fileConfigs.length; i++) {
+            TestInfo.testWriteLn("FILE CONFIG " + i + ": " + fileConfigs[i]);
+            ccTT.newTab();
+            tempCCT = (CCText) ccTT.getSelectedComponent();
+            tempCCT.processConfig(fileConfigs[i]);
+            //TestInfo.testWriteLn("Split name? " + tempCCT.title);
+            if (!tempCCT.changed) {
+                jtt.docUnchanged();
+            }
+            if (tempCCT.jTA.hasLanguageMap()) {
+                jTA.enableLanguageMap();
+                jtt.docLanguageMap(jTA.getLanguageMapName());
+            }
+            if (!tempCCT.hasFile) {
+                int tabCounter = Integer.parseInt(tempCCT.title.replaceAll("untitled-", ""));
+                ccTT.setCounter(tabCounter+1);
+                
+            }
+        }
+        ccTT.closeTab(0);
+    }
+
+    public void windowClosing(WindowEvent we) {
+        config.saveConfig();
+        config.saveOpenFiles(ccTT.getAllTextTabConfigs());
+        config.cleanupTempFiles(ccTT.getAllChangesFiles());
+        //ccTT.getAllTextTabConfigs()
+    }
+
+    public void windowClosed(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowIconified(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowDeiconified(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowActivated(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void windowDeactivated(WindowEvent we) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

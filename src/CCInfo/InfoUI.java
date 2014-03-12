@@ -85,7 +85,7 @@ public class InfoUI {
         jTA.setCaretPosition(0);
     }
     
-    public void setStatus(String text) {
+    public final void setStatus(String text) {
         statusLabel.setText("Status: ");
         println("Status: " + String.valueOf(intCol) + ":" + String.valueOf(intRow + 1) + " | " + text);
         statusMsgLabel.setText(" | " + text);
@@ -97,16 +97,18 @@ public class InfoUI {
         statusMsgLabel.setText(" | " + text);
     }
     
-    public void setRow(int row) {
-        if (row == -1)
+    public final void setRow(int row) {
+        if (row == -1) {
             setStatusError("Row error");
+        }
         intRow = row;
         rowColLabel.setText(String.valueOf(intRow + 1) + ":" + String.valueOf(intCol + 1));
     }
     
     public void setCol(int col) {
-        if (col == -1)
+        if (col == -1) {
             setStatusError("Col error");
+        }
         intCol = col;
         rowColLabel.setText(String.valueOf(intRow + 1) + ":" + String.valueOf(intCol + 1));
     }

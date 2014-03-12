@@ -21,8 +21,9 @@ public class Validation {
     }
     
     public static boolean isValidArrayInt(int num) {
-        if (num > 0)
+        if (num > 0) {
             return true;
+        }
         return false;
     }
     public static boolean isNumeric(String num) {
@@ -36,8 +37,9 @@ public class Validation {
     }
     public static boolean isValidFile(File file) {
         try {
-            if (file.exists())
+            if (file.exists()) {
                 return file.isFile();
+            }
             return false;
         }
         catch (NullPointerException e) {
@@ -46,20 +48,23 @@ public class Validation {
     }
     public static boolean isValidFile(File dir, String file) {
         File newFile = new File(dir.getAbsolutePath() + "\\" + file);
-        if (newFile.exists())
+        if (newFile.exists()) {
             return newFile.isFile();
+        }
         return false;
     }
     public static boolean isValidFile(String file) {
         File newFile = new File(file);
-        if (newFile.exists())
+        if (newFile.exists()) {
             return newFile.isFile();
+        }
         return false;
     }
     public static boolean isValidDirectory(File dir) {
         try {
-            if (dir.exists())
+            if (dir.exists()) {
                 return dir.isDirectory();
+            }
         }
         catch (NullPointerException e) {
             return false;
@@ -68,21 +73,24 @@ public class Validation {
     }
     public static boolean isValidDirectory(File dir, String subDir) {
         File newDir = new File(dir.getAbsolutePath() + "\\" + subDir);
-        if (newDir.exists())
+        if (newDir.exists()) {
             return newDir.isDirectory();
+        }
         return false;
     }
     public static boolean isValidDirectory(String dir) {
         File newDir = new File(dir);
-        if (newDir.exists())
+        if (newDir.exists()) {
             return newDir.isDirectory();
+        }
         return false;
     }
     
     public static boolean isReadOnly(File file) {
         try {
-            if (file.canWrite())
+            if (file.canWrite()) {
                 return false;
+            }
             return true;
         }
         catch (NullPointerException e) {
@@ -110,28 +118,32 @@ public class Validation {
     public static boolean isTextFile(File file) {
         String fileName = file.getName();
         int lastPeriod = fileName.lastIndexOf(".");
-        if (lastPeriod != -1)
+        if (lastPeriod != -1) {
             if (fileName.length() == (lastPeriod + 3)) {
                 String extension = fileName.substring(lastPeriod).toLowerCase();
                 for (int i = 0; i < EXT2.length; i++) {
-                    if (EXT2[i].equals(extension))
+                    if (EXT2[i].equals(extension)) {
                         return true;
+                    }
                 }
             }
             else if (fileName.length() == (lastPeriod + 4)) {
                 String extension = fileName.substring(lastPeriod).toLowerCase();
                 for (int i = 0; i < EXT3.length; i++) {
-                    if (EXT3[i].equals(extension))
+                    if (EXT3[i].equals(extension)) {
                         return true;
+                    }
                 }
             }
             else if (fileName.length() > 5) {
                 String extension = fileName.substring(lastPeriod).toLowerCase();
                 for (int i = 0; i < EXT4.length; i++) {
-                    if (EXT4[i].equals(extension))
+                    if (EXT4[i].equals(extension)) {
                         return true;
+                    }
                 }
             }
+        }
         return false;
     }
     

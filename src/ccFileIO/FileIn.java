@@ -133,7 +133,7 @@ public class FileIn {
             fileReader.close();
         }
         catch (IOException e) {
-            return;
+            
         }
     }
     

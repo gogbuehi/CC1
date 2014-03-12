@@ -10,6 +10,7 @@
 package cc1.ccTextEditor;
 
 import Utilities.TestInfo;
+import java.util.Random;
 
 /**
  *
@@ -81,20 +82,24 @@ public class StringUtil {
         for (int i = 0; i < whiteSpace.length(); i++) {
             chTemp = whiteSpace.charAt(i);
             strTemp = String.valueOf(chTemp);
-            if (strTemp.equals(ASPACE))
+            if (strTemp.equals(ASPACE)) {
                 spaces++;
-            else if (strTemp.equals(ATAB))
+            }
+            else if (strTemp.equals(ATAB)) {
                 tabs++;
+            }
         }
         if (spaces > 7) {
             newTabs = spaces / 8;
             spaces %= 8;
         }
         //Generate new indent
-        for (int i = 0; i < tabs + newTabs; i++)
+        for (int i = 0; i < tabs + newTabs; i++) {
             ret += ATAB;
-        for (int i = 0; i < spaces; i++)
+        }
+        for (int i = 0; i < spaces; i++) {
             ret += ASPACE;
+        }
         
         return ret;
     }
@@ -106,16 +111,16 @@ public class StringUtil {
         String strTemp;
         boolean boolA,boolB;
         for (int i = 0; i < text.length(); i++) {
-            boolA = false;
-            boolB = false;
             chTemp = text.charAt(i);
             strTemp = String.valueOf(chTemp);
             boolA = strTemp.equals(ASPACE);
             boolB = strTemp.equals(ATAB);
-            if (boolA || boolB)
+            if (boolA || boolB) {
                 ret += strTemp;
-            else
+            }
+            else {
                 return ret;
+            }
         }
         TestInfo.testWriteLn("Indent: " + ret);
         return ret;
@@ -128,17 +133,14 @@ public class StringUtil {
         String strTemp;
         boolean boolA,boolB,boolC;
         for (int i = 0; i < text.length(); i++) {
-            boolA = false;
-            boolB = false;
             chTemp = text.charAt(i);
             strTemp = String.valueOf(chTemp);
             boolA = strTemp.equals(ASPACE);
             boolB = strTemp.equals(ATAB);
             boolC = strTemp.equals("\n");
-            if (boolA || boolB || boolC)
-                ;
-            else
+            if (!(boolA || boolB || boolC)) {
                 return false;
+            }
         }
         //TestInfo.testWriteLn("Indent: " + ret);
         return ret;
@@ -179,7 +181,7 @@ public class StringUtil {
         hexChars[15] = "F";
         int j;
         int k = 1;
-        int l = hex.length() - 1;
+        int l;
         int m = hex.length() - 1;
         for (int i = 0; i < hex.length(); i++) {
             l = m - i;
@@ -205,9 +207,7 @@ public class StringUtil {
         for (int i = 0; i < cArray.length; i++) {
             strTemp = "";
             temp = Integer.valueOf(cArray[i]);
-            temp1 = 0;
             temp2 = 0;
-            temp3 = 0;
             temp4 = 0;
             
             if (temp >= intVal) {
@@ -215,10 +215,8 @@ public class StringUtil {
                 temp2 = temp % intVal;
                 if (temp1 > intVal) {
                     temp3 = temp1 /intVal;
-                    temp1 = temp1 % intVal;
                     if (temp3 > intVal) {
                         temp4 = temp3 / intVal;
-                        temp3 = temp3 % intVal;
                     }
                 }
                 
@@ -242,10 +240,10 @@ public class StringUtil {
                 cTemp3 =  (char) temp3;
                 cTemp4 = (char) temp4;
                 //if (temp1 >= 0)
-                    ;//output += String.valueOf(cTemp1);
+                    //output += String.valueOf(cTemp1);
                     //output += makeHex(temp1);
                 //if (temp2 >= 0)
-                    ;//output += String.valueOf(cTemp2);
+                    //output += String.valueOf(cTemp2);
                 output += "&#" + String.valueOf(temp3) + ";";
                     //output += makeHex(temp2);
             }
@@ -259,5 +257,18 @@ public class StringUtil {
         //output = Convert.toBase64String(Convert.fromBase64String(input));
         //entrArea.setText(output);
         return output;
+    }
+    
+    public static final String RANDOM_CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    
+    public static String generateRandomString(int characterCount) {
+        String result = "";
+        int j;
+        Random rand = new Random(); 
+        for (int i = 0; i < characterCount; i++) {
+            j = Math.abs(rand.nextInt(RANDOM_CHARACTERS.length()));
+            result += RANDOM_CHARACTERS.substring(j, j+1);
+        }
+        return result;
     }
 }

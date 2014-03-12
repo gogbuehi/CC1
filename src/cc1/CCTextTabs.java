@@ -6,11 +6,10 @@
 
 package cc1;
 
-import Utilities.TestInfo;
+import cc1.ccTextEditor.CCTextArea;
 import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -60,7 +59,7 @@ public class CCTextTabs extends JTabbedPane {
         String tabTitle = "untitled-" + tabCounter;
         CCText newText = new CCText(tabTitle);
         int selectedIndex = getSelectedIndex();
-        tabCounter++;
+        incrementCounter();
         
         //add(tabTitle,newTab);
         //insertTab(tabTitle, null,newTab,tabTitle,selectedIndex+1);
@@ -73,7 +72,7 @@ public class CCTextTabs extends JTabbedPane {
         //CCTab newTab = new CCTab();
         CCText newText = new CCText(openFile);
         int selectedIndex = getSelectedIndex();
-        tabCounter++;
+        incrementCounter();
         String tabTitle = openFile.getName();
         //add(tabTitle,newTab);
         //insertTab(tabTitle, null,newTab,tabTitle,selectedIndex+1);
@@ -98,12 +97,12 @@ public class CCTextTabs extends JTabbedPane {
         newText.setFile(openFile);
         setCurrentFile();
     }
-    public JTextArea getCurrentJTA() {
+    public CCTextArea getCurrentJTA() {
         //int currentIndex = getSelectedIndex();
         //CCTab currentTab = (CCTab) getSelectedComponent();
         if (!defaultHold) {
             CCText currentTab = (CCText) getSelectedComponent();
-            return currentTab.th.getJTA();
+            return currentTab.getJTA();
         }
         return null;
     }
@@ -123,18 +122,57 @@ public class CCTextTabs extends JTabbedPane {
     
     public void closeTab(int index) {
         //TestInfo.testWriteLn("ccTT Closing tab");
-        if (getTabCount() == 1)
+        if (getTabCount() == 1) {
             defaultHold = true;
+        }
         this.remove(index);
         defaultHold = false;
     }
     
     public void checkForNoTabs() {
-        if (getTabCount() < 1)
+        if (getTabCount() < 1) {
             newTab();
+        }
     }
     
     public void setEventCatcher(EventCatcher ec) {
         this.ec = ec;
+    }
+    
+    public CCText[] getAllTextTabs() {
+        int tabCount = getTabCount();
+        CCText[] allTabs = new CCText[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = (CCText) getComponentAt(i);
+        }
+        
+        return allTabs;
+    }
+    
+    public String[] getAllTextTabConfigs() {
+        int tabCount = getTabCount();
+        String[] allTabs = new String[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = ((CCText) getComponentAt(i)).toConfig();
+        }
+        
+        return allTabs;
+    }
+    
+    public String[] getAllChangesFiles() {
+        int tabCount = getTabCount();
+        String[] allTabs = new String[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = ((CCText) getComponentAt(i)).getTemporaryChangesFileName();
+        }
+        return allTabs;
+    }
+    
+    public void incrementCounter() {
+        tabCounter++;
+    }
+    
+    public void setCounter(int value) {
+        tabCounter = value;
     }
 }

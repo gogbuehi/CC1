@@ -26,7 +26,7 @@ public class FileOut extends Thread {
     }
     
     public FileOut(File nfile) throws NullPointerException {
-        if (!nfile.exists())
+        if (!nfile.exists()) {
             try {
                 nfile.createNewFile();
                 this.file = nfile;
@@ -34,19 +34,22 @@ public class FileOut extends Thread {
             catch (IOException e) {
                 
             }
-        else
+        }
+        else {
             this.file = nfile;
+        }
     }
     
     public FileOut(String filename) throws NullPointerException {
         file = new File(filename);
-        if (!file.exists())
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             }
             catch (IOException e) {
                 
             }
+        }
     }
     
     public String getFileName() {
@@ -128,8 +131,9 @@ public class FileOut extends Thread {
         FileWriter out = new FileWriter(outputFile);
         int c;
 
-        while ((c = in.read()) != -1)
-           out.write(c);
+        while ((c = in.read()) != -1) {
+            out.write(c);
+        }
 
         in.close();
         out.close();
@@ -144,8 +148,9 @@ public class FileOut extends Thread {
         FileWriter out = new FileWriter(outputFile);
         int c;
 
-        while ((c = in.read()) != -1)
-           out.write(c);
+        while ((c = in.read()) != -1) {
+            out.write(c);
+        }
 
         in.close();
         out.close();
