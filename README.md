@@ -2,11 +2,12 @@ Update [2014-03-11]:
 As I continue to work with this codebase, I am forced to confront the ignorance of my younger self. In particular, I am appalled at how many direct references to objects most of my classes require. I will be working to find a way to remove the vulnerability to memory leaks, so that this application meets my current standards for healthy object-oriented programming.
 Some new features I'm integrating into the application:
  - A way to type non-ASCII characters using an ASCII keyboard
- -- This was inspired by my wife struggling to be able to type Amharic characters while she is doing reserach in Ethiopia. While
+  - This was inspired by my wife struggling to be able to type Amharic characters while she is doing research in Ethiopia. While she is normally able to do this using a handy website, Ethiopia's lack of reliable internet means she needed a tool she could use offline for this purpose. Having already written most of what I need in a text editor, I just needed to create a way to translate latin characters to the alternate language characters. I had to change the font in order for this to work, but in time, I'll make it so that this happens automatically for files with non-ASCII characters (but retains Courier New for regular text files).
+  - I will be working with my wife to perfect the usability of this feature, as I'm not sure what it could use to work effectively for her needs.
  - A feature to restore tabs automatically after closing the app
- -- This doesn't yet handle the situation where the application is suddenly halted (due to a crash or is killed by the OS).
- -- This will restore changes made to the documents
- -- This will restore the language map that is in use for the document, if it is available in the local application directory
+  - This doesn't yet handle the situation where the application is suddenly halted (due to a crash or is killed by the OS).
+  - This will restore changes made to the documents
+  - This will restore the language map that is in use for the document, if it is available in the local application directory
 
 History:
 During my tenure at one of my first actual programming jobs, I found the IDE I was required to use to edit VBScript to be insufficient for a number of needs. As a result, I took it upon myself to brush up on my Java skills and write my own IDE to fulfill these inadequacies. From Summer of 2005 through to late 2006, I made updates to this app, adding features that helped automate or simplify my daily programming tasks.
@@ -32,3 +33,5 @@ This app came in handy, and I regularly developed using it. Had I more time, I c
 Another important note: I wrote this before I had learned how to maintain a version controlled repository for my source code. As a result, my code is riddled with commented code, in an attempt to preserve anything that might be useful later. Now that I'm actively developing in the code and it is now properly managed by a version control system, I'll be working to remove the needless comments, and (eventually) refactor the code to eliminate the interdependence between classes and improve the architecture of the application.
 
 I started writing features for the editor to try to automate programming PHP apps, but Netbeans released a very reliable PHP editor, so I abandoned the effort.
+
+The Application's Main class is:  src/cc1/Main.java
