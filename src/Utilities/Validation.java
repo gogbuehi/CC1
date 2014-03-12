@@ -13,9 +13,10 @@ import java.io.File;
  * @author  goodwin.ogbuehi
  */
 public class Validation {
-    private final static String [] EXT2 = {".js",".cc"};
-    private final static String [] EXT3 = {".txt",".asp",".php",".xml",".htm",".nfo",".css",".sql"};
-    private final static String [] EXT4 = {".html",".java"};
+    private final static String [] EXT2 = {".js",".cc",".rb",".sh",".ru"};
+    private final static String [] EXT3 = {".txt",".asp",".php",".xml",".htm",".nfo",".css",".sql",".erb",".yml",".log"};
+    private final static String [] EXT4 = {".html",".java",".scss"};
+    private final static String [] EXT6 = {".coffee"};
     /** Creates a new instance of Validation */
     public Validation() {
     }
@@ -61,8 +62,12 @@ public class Validation {
         return false;
     }
     public static boolean isValidDirectory(File dir) {
+        return isValidDirectory(dir,false);
+    }
+    
+    public static boolean isValidDirectory(File dir, boolean restrictHidden) {
         try {
-            if (dir.exists()) {
+            if (dir.exists() && !(restrictHidden && dir.isHidden())) {
                 return dir.isDirectory();
             }
         }
@@ -135,10 +140,20 @@ public class Validation {
                     }
                 }
             }
-            else if (fileName.length() > 5) {
+            else if (fileName.length() == (lastPeriod + 5)) {
+            //else if (fileName.length() > 5) {
                 String extension = fileName.substring(lastPeriod).toLowerCase();
                 for (int i = 0; i < EXT4.length; i++) {
                     if (EXT4[i].equals(extension)) {
+                        return true;
+                    }
+                }
+            }
+            else if (fileName.length() == (lastPeriod + 7)) {
+            //else if (fileName.length() > 5) {
+                String extension = fileName.substring(lastPeriod).toLowerCase();
+                for (int i = 0; i < EXT6.length; i++) {
+                    if (EXT6[i].equals(extension)) {
                         return true;
                     }
                 }

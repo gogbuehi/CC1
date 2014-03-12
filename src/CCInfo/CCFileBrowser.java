@@ -51,6 +51,8 @@ public class CCFileBrowser implements ListSelectionListener {
     EventCatcher ec;
     boolean ignoreLists;
     
+    boolean mIgnoreHiddenFiles = true;
+    
     JLabel jlCurrDir;
     /** Creates a new instance of CCFileBrowser */
     public CCFileBrowser() {
@@ -77,7 +79,7 @@ public class CCFileBrowser implements ListSelectionListener {
         //boolean [] file_v_dir = new boolean [files_dirs.length];
         //File = true; Dir = false
         for (int i = 0; i < files_dirs.length; i++) {
-            if (Validation.isValidDirectory(files_dirs[i])) {
+            if (Validation.isValidDirectory(files_dirs[i], mIgnoreHiddenFiles)) {
                 //file_v_dir[i] = false;
                 //TestInfo.testWriteLn("Dir: " + strFiles_dirs[i]);
                 //TestInfo.testWriteLn("DName: " + files_dirs[i].getName());
