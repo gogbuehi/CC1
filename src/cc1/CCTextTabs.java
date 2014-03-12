@@ -159,6 +159,15 @@ public class CCTextTabs extends JTabbedPane {
         return allTabs;
     }
     
+    public String[] getAllChangesFiles() {
+        int tabCount = getTabCount();
+        String[] allTabs = new String[tabCount];
+        for(int i = 0; i < tabCount; i++) {
+            allTabs[i] = ((CCText) getComponentAt(i)).getTemporaryChangesFileName();
+        }
+        return allTabs;
+    }
+    
     public void incrementCounter() {
         tabCounter++;
     }

@@ -6,7 +6,9 @@
 
 package cc1;
 import cc1.ccTextEditor.StringUtil;
+import ccFileIO.CCDirectory;
 import java.io.*;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -225,6 +227,32 @@ public class Config {
             //Do Nothing.
         }
         return false;
+    }
+    
+    public void cleanupTempFiles(String [] tabsWithTempFiles) {
+        CCDirectory ccD = new CCDirectory();
+        File[] tempFiles = ccD.getFilesWithExtension("tmp");
+        HashMap<String, Boolean> tempFileHashMap = new HashMap<String, Boolean>();
+        for (File file : tempFiles) {
+            System.out.println("Temp File: " + file.getName());
+            tempFileHashMap.put(file.getName(), Boolean.FALSE);
+        }
+        
+        for (String tempFileName : tabsWithTempFiles) {
+            if (tempFileHashMap.containsKey(tempFileName)) {
+                tempFileHashMap.remove(tempFileName);
+                System.out.println("Removing Temp File: " + tempFileName);
+            }
+        }
+        String deleteFileName;
+        for (File file : tempFiles) {
+            deleteFileName = file.getName();
+            if (tempFileHashMap.containsKey(deleteFileName)) {
+                if(file.delete()) {
+                    System.out.println("Deleted " + deleteFileName);
+                }
+            }
+        }
     }
     
     public void closeConfig() {

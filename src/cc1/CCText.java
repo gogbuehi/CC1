@@ -35,6 +35,8 @@ public class CCText extends JScrollPane {
     public String title;
     
     public Object undo;
+    
+    protected String changesFileName = "";
 
     public CCText() {
         super();
@@ -138,19 +140,27 @@ public class CCText extends JScrollPane {
         return file.getParentFile();
     }
     
-    private String createTempFile(String text) {
+    private void saveTextToFile(String text) {
+        if (changesFileName.equals("")) {
+            changesFileName = StringUtil.generateRandomString(16)+".tmp";
+        }
+        createTempFile(text);
+    }
+    
+    private void createTempFile(String text) {
         CCFile tempFile = new CCFile();
-        String tempFilename = StringUtil.generateRandomString(16)+".tmp";
+        String tempFilename = changesFileName;
         File temporaryFile = new File(tempFilename);
         try {
-            temporaryFile.createNewFile();
+            if (!temporaryFile.exists()) {
+                temporaryFile.createNewFile();
+            }
         } catch (IOException ex) {
             Logger.getLogger(CCText.class.getName()).log(Level.SEVERE, null, ex);
         }
         tempFile.openFile(temporaryFile);
         tempFile.setText(text);
         tempFile.saveFile(temporaryFile);
-        return tempFilename;
     }
     
     private void cleanupTempFiles() {
@@ -224,9 +234,22 @@ public class CCText extends JScrollPane {
         
         result += bitmask + StringUtil.ATAB + title;
         result += hasFile ? StringUtil.ATAB + file.getAbsolutePath() : StringUtil.ATAB;
-        result += changed ? StringUtil.ATAB + createTempFile(jTA.getText()) : StringUtil.ATAB;
+        //result += changed ? StringUtil.ATAB + createTempFile(jTA.getText()) : StringUtil.ATAB;
+        
+        
+        if (changed) {
+            saveTextToFile(jTA.getText());
+            result += StringUtil.ATAB + changesFileName;
+        } else {
+            result += StringUtil.ATAB;
+        }
+        
         result += hasLanguageMap ? StringUtil.ATAB + jTA.getLanguageMapName() : StringUtil.ATAB;
         
         return result;
+    }
+    
+    public String getTemporaryChangesFileName() {
+        return changesFileName;
     }
 }

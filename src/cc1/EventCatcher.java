@@ -962,6 +962,7 @@ public class EventCatcher implements KeyListener, MouseListener, ChangeListener,
     public void windowClosing(WindowEvent we) {
         config.saveConfig();
         config.saveOpenFiles(ccTT.getAllTextTabConfigs());
+        config.cleanupTempFiles(ccTT.getAllChangesFiles());
         //ccTT.getAllTextTabConfigs()
     }
 
